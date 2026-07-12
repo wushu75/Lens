@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Support — Lens</title>
+<meta name="description" content="Troubleshooting and support for the Lens Chrome extension." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void: #0a0a0f;
+    --glass: rgba(255,255,255,0.055);
+    --glass-border: rgba(255,255,255,0.12);
+    --text: #f3f3f6;
+    --text-muted: rgba(243,243,246,0.58);
+    --text-faint: rgba(243,243,246,0.34);
+    --accent-blue: #7c9dff;
+    --accent-violet: #a78bfa;
+    --accent-mint: #5be3a4;
+    --accent-red: #ff6b6b;
+    --grad: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ background: var(--void); color: var(--text); font-family: var(--sans); line-height: 1.6; position: relative; }
+  body::before{
+    content:""; position: fixed; width: 480px; height: 480px; top: -180px; right: -160px;
+    border-radius: 50%; filter: blur(100px); opacity: 0.22; background: var(--accent-violet);
+    z-index: 0; pointer-events: none;
+  }
+  a{ color: inherit; }
+  :focus-visible{ outline: 2px solid var(--accent-blue); outline-offset: 3px; border-radius: 4px; }
+  .wrap{ max-width: 780px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+  nav{
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(10,10,15,0.6);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  nav .navwrap{
+    max-width: 1080px; margin: 0 auto; padding: 0 28px;
+    display:flex; align-items:center; justify-content: space-between; height: 64px;
+  }
+  .logo{ display:flex; align-items:center; gap:9px; font-family: var(--serif); font-weight: 500; font-size: 20px; text-decoration:none; }
+  .logo-dot{ width:9px; height:9px; border-radius:50%; background: var(--grad); box-shadow: 0 0 10px 1px rgba(124,157,255,0.6); }
+  .nav-cta{
+    font-family: var(--mono); font-size: 12.5px; padding: 9px 16px; border-radius: 999px;
+    background: var(--glass); border: 1px solid var(--glass-border); text-decoration:none;
+    transition: border-color 150ms ease, background 150ms ease; white-space: nowrap;
+  }
+  .nav-cta:hover{ border-color: rgba(124,157,255,0.5); background: rgba(124,157,255,0.08); }
+
+  header.page-head{ padding: 64px 0 32px; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; font-family: var(--mono); font-size: 12px;
+    color: var(--text-muted); background: var(--glass); border: 1px solid var(--glass-border);
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 22px;
+  }
+  h1{ font-family: var(--serif); font-weight: 300; font-style: italic; font-size: clamp(32px, 5vw, 48px); margin-bottom: 14px; }
+  .sub{ color: var(--text-muted); font-size: 15px; max-width: 520px; }
+
+  main{ padding-bottom: 100px; }
+
+  /* quick links */
+  .quick-links{ display:grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 36px 0 8px; }
+  .quick-links a{
+    display:block; text-decoration:none; border-radius: 14px; border: 1px solid var(--glass-border);
+    background: var(--glass); padding: 18px; font-size: 13.5px; color: var(--text);
+    transition: border-color 150ms ease, transform 150ms ease;
+  }
+  .quick-links a:hover{ border-color: rgba(124,157,255,0.4); transform: translateY(-2px); }
+  .quick-links .ql-label{ font-family: var(--mono); font-size: 11px; color: var(--accent-blue); display:block; margin-bottom: 6px; }
+
+  /* issue accordion-ish cards */
+  .issues{ margin-top: 52px; }
+  .issues > h2{ font-family: var(--serif); font-weight: 500; font-size: 22px; margin-bottom: 20px; }
+  .issue{
+    border: 1px solid var(--glass-border); background: var(--glass); border-radius: 16px;
+    padding: 22px 24px; margin-bottom: 14px;
+  }
+  .issue-title{ display:flex; align-items:flex-start; gap: 10px; margin-bottom: 10px; }
+  .issue-dot{ width:8px; height:8px; border-radius:50%; margin-top: 6px; flex-shrink:0; background: var(--accent-blue); }
+  .issue-dot.minor{ background: var(--text-faint); }
+  .issue-dot.fixed{ background: var(--accent-mint); }
+  .issue h3{ font-family: var(--serif); font-weight: 500; font-size: 16.5px; }
+  .issue p{ color: var(--text-muted); font-size: 14px; margin-bottom: 8px; }
+  .issue p:last-child{ margin-bottom: 0; }
+  .tag{
+    display:inline-block; font-family: var(--mono); font-size: 10.5px; letter-spacing:0.03em;
+    padding: 2px 9px; border-radius: 999px; margin-left: 6px; vertical-align: 2px;
+  }
+  .tag.fixed{ background: rgba(91,227,164,0.14); border:1px solid rgba(91,227,164,0.35); color: var(--accent-mint); }
+  .tag.expected{ background: rgba(124,157,255,0.14); border:1px solid rgba(124,157,255,0.35); color: var(--accent-blue); }
+  code{
+    font-family: var(--mono); font-size: 12.5px; color: var(--accent-blue);
+    background: rgba(124,157,255,0.1); padding: 1px 6px; border-radius: 5px;
+  }
+  .issue ol, .issue ul{ padding-left: 20px; color: var(--text-muted); font-size: 14px; }
+  .issue li{ margin-bottom: 6px; }
+
+  /* contact */
+  .contact{
+    margin-top: 52px; border-radius: 20px; border: 1px solid var(--glass-border);
+    background: linear-gradient(180deg, rgba(124,157,255,0.06), rgba(167,139,250,0.03));
+    padding: 36px 32px; text-align: center;
+  }
+  .contact h2{ font-family: var(--serif); font-weight: 300; font-style: italic; font-size: 26px; margin-bottom: 12px; }
+  .contact p{ color: var(--text-muted); font-size: 14.5px; margin-bottom: 22px; max-width: 440px; margin-left:auto; margin-right:auto; }
+  .contact-actions{ display:flex; gap: 12px; justify-content:center; flex-wrap: wrap; }
+  .btn-primary{
+    font-family: var(--sans); font-weight: 600; font-size: 14px; color: #0d0d12; background: var(--grad);
+    padding: 12px 22px; border-radius: 11px; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition: filter 150ms ease, transform 150ms ease;
+  }
+  .btn-primary:hover{ filter: brightness(1.08); transform: translateY(-1px); }
+  .btn-secondary{
+    font-family: var(--mono); font-size: 13px; color: var(--text); background: var(--glass);
+    border: 1px solid var(--glass-border); padding: 12px 22px; border-radius: 11px; text-decoration:none;
+    transition: border-color 150ms ease;
+  }
+  .btn-secondary:hover{ border-color: rgba(124,157,255,0.5); }
+
+  footer{ border-top: 1px solid rgba(255,255,255,0.07); padding: 28px 0; }
+  footer .footwrap{
+    max-width: 1080px; margin: 0 auto; padding: 0 28px;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap: wrap; gap: 12px;
+  }
+  footer p{ font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); }
+  footer .links{ display:flex; gap:20px; }
+  footer .links a{ font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); text-decoration:none; }
+  footer .links a:hover{ color: var(--text-muted); }
+
+  @media (max-width: 720px){ .quick-links{ grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce){ *{ transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="navwrap">
+      <a class="logo" href="index.html"><span class="logo-dot"></span>Lens</a>
+      <a class="nav-cta" href="index.html#install">Add to Chrome →</a>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="wrap">
+      <span class="eyebrow">Support</span>
+      <h1>Something not working?</h1>
+      <p class="sub">Most Lens issues fall into a handful of known patterns — check here first. If yours isn't listed, jump straight to reporting it below.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <div class="quick-links">
+      <a href="#first-run"><span class="ql-label">01</span>First analysis is slow</a>
+      <a href="#context-menu"><span class="ql-label">02</span>No right-click option</a>
+      <a href="#report"><span class="ql-label">03</span>Report a new issue</a>
+    </div>
+
+    <div class="issues">
+      <h2>Common issues</h2>
+
+      <div class="issue" id="first-run">
+        <div class="issue-title">
+          <span class="issue-dot minor"></span>
+          <h3>The first analysis takes a while <span class="tag expected">Expected</span></h3>
+        </div>
+        <p>The very first time you use Lens, it downloads the AI model (roughly 200–300MB) so it can run fully on your device from then on. This only happens once — every analysis after that is fast, and repeat analyses of the <em>same</em> image are instant thanks to Lens's local cache.</p>
+        <p>If it seems stuck rather than just slow, check your internet connection for that first download — after that, Lens needs no connection at all.</p>
+      </div>
+
+      <div class="issue" id="context-menu">
+        <div class="issue-title">
+          <span class="issue-dot minor"></span>
+          <h3>"Analyze with Lens" doesn't appear in the right-click menu</h3>
+        </div>
+        <p>This almost always means the tab was already open before Lens was installed or updated — Chrome doesn't retroactively inject extensions into existing tabs.</p>
+        <ol>
+          <li>Refresh the page you're trying to use Lens on.</li>
+          <li>If that doesn't help, go to <code>chrome://extensions</code> and click the reload icon on Lens's card.</li>
+          <li>Confirm Lens is enabled and not paused for that site under "Site access."</li>
+        </ol>
+      </div>
+
+      <div class="issue">
+        <div class="issue-title">
+          <span class="issue-dot fixed"></span>
+          <h3>Console shows repeated "Removing initializer" warnings <span class="tag fixed">Not a bug</span></h3>
+        </div>
+        <p>This is a known, harmless message from the AI runtime cleaning up unused parts of the model graph while it loads — it doesn't affect your results. Recent versions of Lens filter this out of the console automatically.</p>
+      </div>
+
+      <div class="issue">
+        <div class="issue-title">
+          <span class="issue-dot fixed"></span>
+          <h3>Console shows <code>Failed to execute 'importScripts'</code> <span class="tag fixed">Fixed</span></h3>
+        </div>
+        <p>This was a real bug in earlier builds, caused by the AI runtime trying to use a background worker thread that doesn't work inside a Chrome extension. It's fixed as of the current version.</p>
+        <p>If you still see this: update to the latest version, then fully remove and reinstall the extension so any partial model download gets cleared out.</p>
+      </div>
+
+      <div class="issue">
+        <div class="issue-title">
+          <span class="issue-dot minor"></span>
+          <h3>"Copy & Share" doesn't seem to copy anything</h3>
+        </div>
+        <p>Make sure you're clicking the button itself (not just viewing the card) — browsers only allow clipboard writes in direct response to a real click. Then try pasting into any text field to confirm; some sites' own paste handling can interfere with what you see immediately after, but the clipboard content itself is set correctly.</p>
+      </div>
+
+      <div class="issue">
+        <div class="issue-title">
+          <span class="issue-dot minor"></span>
+          <h3>Want to clear Lens's cached results</h3>
+        </div>
+        <p>Go to <code>chrome://extensions</code> → Lens → Details → Clear storage. This removes all locally cached captions/tags; nothing needs to be cleared on any server, because there isn't one.</p>
+      </div>
+    </div>
+
+    <div class="contact" id="report">
+      <h2>Still stuck?</h2>
+      <p>Open an issue with what you were doing, what you expected, and — if you can — a screenshot of the console (right-click the page → Inspect → Console).</p>
+      <div class="contact-actions">
+        <a class="btn-primary" href="https://github.com/wushu75/Lens/issues/new">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#0d0d12"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          Report on GitHub
+        </a>
+        <a class="btn-secondary" href="mailto:support@lens-extension.dev">Email support</a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footwrap">
+      <p>Lens — built with Manifest V3 &amp; Transformers.js.</p>
+      <div class="links">
+        <a href="privacy.html">Privacy</a>
+        <a href="support.html">Support</a>
+        <a href="https://github.com/wushu75/Lens">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
