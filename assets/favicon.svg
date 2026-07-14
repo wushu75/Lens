@@ -1,0 +1,25 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lensGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c9dff"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <radialGradient id="lensGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Ghost-glass rounded square backdrop -->
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="#14141c"/>
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#lensGrad)" opacity="0.18"/>
+  <rect x="5" y="5" width="118" height="118" rx="27" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>
+
+  <!-- Magnifying-glass / lens glyph -->
+  <circle cx="54" cy="54" r="26" fill="none" stroke="url(#lensGrad)" stroke-width="8"/>
+  <circle cx="54" cy="54" r="26" fill="url(#lensGlow)" opacity="0.5"/>
+  <line x1="73" y1="73" x2="96" y2="96" stroke="url(#lensGrad)" stroke-width="9" stroke-linecap="round"/>
+
+  <!-- Small pulse dot, echoing the overlay's "analyzing" indicator -->
+  <circle cx="54" cy="54" r="6" fill="#ffffff" opacity="0.9"/>
+</svg>
